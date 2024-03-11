@@ -4,6 +4,7 @@ Marauder's map uses [JWTs](https://jwt.io/) to authenticate users.
 
 ## Usage
 
+A JWT token can be aquired using the `POST /token` endpoint (TODO: link / more details on required fields). On all requests requiring authentification, the token must be sent in the HTTP `Authorization` header field.
 
 ## Structure
 ### Header
