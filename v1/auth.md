@@ -22,10 +22,10 @@ The header is constant for all tokens. The `RSA 512-bit` algorithm shall be used
 
 ```json
 {
-  "sub": <user_id>,
-  "iss": <client_id>,
-  "iat": <timestamp>,
-  "exp": <timestamp>
+  "sub": "<user_id>",
+  "iss": "<client_id>",
+  "iat": "<timestamp>",
+  "exp": "<timestamp>"
 }
 ```
 
