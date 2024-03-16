@@ -58,6 +58,38 @@ type Query {
   searchUsersByNameFragment(nameFragment: String): [User!]!
 }
 
+"""
+If a client abuses the login system by sending too many requests, it may be blocked.
+"""
+enum LoginStatus {
+  SUCCESS
+  FAILURE
+  BLOCKED
+}
+
+type LoginResult {
+  token: String
+  status: LoginStatus
+}
+
+type Mutation {
+  login(username: String!, password: String!): LoginResult!
+  """
+  Return value: success
+  """
+  setStatus(newStatus: Status): Boolean!
+  """
+  To set a new profile picture, the image shall be transmitted as a base64-encoded string to transmit the file.
+  The updated value for profile will be returned
+  """
+  setProfilePicture(profilePicture: String!): User!
+  """
+  If a null value is passsed as the nickname, the nickname should be discarded
+  Return value: success
+  """
+  createNickname(guid: String!, nickname: String): Boolean!
+}
+
 type schema {
   query: Query
   mutation: Mutation
