@@ -1,0 +1,96 @@
+"""
+A user can have one of many different statuses. This will change how they are displayed.
+"""
+enum Status {
+  HIDDEN
+  AWAY
+  IN_TUTORIUM
+  IN_LESSON
+  PRESENT
+}
+
+"""
+A user's position relative to some fixed point on the map.
+The floor number indicates the level of the building the position is pointing to.
+A floor value of 0 means ground level.
+"""
+type Position {
+  x: Float!
+  y: Float!
+  floor: Int!
+}
+
+"""
+A user's connection status to a (potential friend)
+A stranger is a user the querying user has not interacted with.
+If a request has been sent, this is displayed here from the viewpoint of the user that is querying the data.
+If A sends B a friend request, A will see B's connection status as REQUEST_SENT.
+Two users are considered friends when both have sent a friend request to each other, meaning both parties consent to their information being shared.
+"""
+enum ConnectionStatus {
+  STRANGER
+  REQUEST_SENT
+  REQUEST_RECEIVED
+  FRIEND
+}
+
+"""
+Some of these fields may be null especially when returning from the profile query, because user A has no connectionStatus with user A (null because they are neither friends nor strangers, they are the same user).
+The profile picture is a resource id. It may be obtained by sending a GET request to "/api/v1/res/<profilePicture>". Clients should cache other users' profile pictures at least for friednds to avoid unneccessary requests to the resource endpoint.
+A user can create a nickname for another user. This will only affect the user that has set the nickname.
+"""
+type User {
+  name: String!
+  nickname: String
+  guid: String!
+  profilePicture: String!
+  status: Status!
+  description: String
+  position: Position
+  connectionStatus: ConnectionStatus
+}
+
+type Query {
+  "List of friends that have been established"
+  friends: [User!]!
+  profile: User!
+
+  searchUsersByNameFragment(nameFragment: String): [User!]!
+}
+
+"""
+If a client abuses the login system by sending too many requests, it may be blocked.
+"""
+enum LoginStatus {
+  SUCCESS
+  FAILURE
+  BLOCKED
+}
+
+type LoginResult {
+  token: String
+  status: LoginStatus
+}
+
+type Mutation {
+  login(username: String!, password: String!): LoginResult!
+  """
+  Return value: success
+  """
+  setStatus(newStatus: Status): Boolean!
+  """
+  To set a new profile picture, the image shall be transmitted as a base64-encoded string to transmit the file.
+  The updated value for profile will be returned
+  """
+  setProfilePicture(profilePicture: String!): User!
+  """
+  If a null value is passsed as the nickname, the nickname should be discarded
+  Return value: success
+  """
+  createNickname(guid: String!, nickname: String): Boolean!
+}
+
+type schema {
+  query: Query
+  mutation: Mutation
+}
