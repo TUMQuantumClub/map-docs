@@ -7,6 +7,7 @@ Marauder's map uses [JWTs](https://jwt.io/) to authenticate users.
 A JWT token can be aquired using the `POST /token` endpoint (TODO: link / more details on required fields). On all requests requiring authentification, the token must be sent in the HTTP `Authorization` header field.
 
 ## Structure
+
 ### Header
 
 ```json
@@ -33,7 +34,7 @@ The `sub` field is required and holds a unique identifier for the user in the fo
 
 The `iss` field is required and holds a unique identifier for each authrization server. It must be a string but the exact value may differ between implementations. An authorization server must always use the same `iss` value. When verifying a JWT from a client, a server must examine the `iss` field and check that the signature field matches a public key assosciated with the issuer.
 
-All timestamp values shall be JSON-compliant integers and represent the number of __seconds__ since the Unix epoch on 1 January 1970.
+All timestamp values shall be JSON-compliant integers and represent the number of **seconds** since the Unix epoch on 1 January 1970.
 
 The `iat` and `exp` fields are required. The `iat` field (issued at1) shall be set the the time of issuing the token by the server. The `exp` field (expiration time) must be greater than the `iat` field.
 
